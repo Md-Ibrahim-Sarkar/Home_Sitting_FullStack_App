@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+.scrollbar-hidden {
+  overflow-y: auto; /* Enables vertical scrolling when needed */
+  scrollbar-width: 10px; /* Hides scrollbar in Firefox */
+  -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
+
+  /* Hides scrollbar for WebKit browsers (Chrome, Safari) */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
