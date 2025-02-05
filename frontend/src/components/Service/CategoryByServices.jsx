@@ -49,8 +49,8 @@ const CategoryByServices = () => {
                   {service.description}
                 </p>
               </div>
-              <button className="px-6 py-3 mx-auto w-full justify-center flex flex-row items-center cursor-pointer hover:bg-cyan-500 hover:font-semibold bg-gray-100">
-                Book This Service
+              <button className="px-6 py-3 mx-auto w-full justify-center flex flex-row items-center cursor-pointer hover:bg-cyan-500 hover:font-semibold border">
+                See The Details
               </button>
             </div>
           </div>

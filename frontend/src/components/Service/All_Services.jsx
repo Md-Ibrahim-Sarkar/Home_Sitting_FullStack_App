@@ -96,7 +96,7 @@ const All_Services = () => {
                 </div>
                 <Link to={`/services/details/${service._id}`}
                   onClick={handleClick} className="px-6 py-3 mx-auto w-full border rounded justify-center flex flex-row items-center cursor-pointer hover:bg-cyan-500 hover:font-semibold ">
-                  See This Service
+                  See The Details
                 </Link>
               </div>
             </div>

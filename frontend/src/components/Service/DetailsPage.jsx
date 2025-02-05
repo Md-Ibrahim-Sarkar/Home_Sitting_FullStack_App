@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { getFavorites } from "../../features/favorites/favoriteSlice";
 
 const DetailsPage = () => {
-  const { isBookingPageOpen, setIsBookingPageOpen, setIsBookingId } = useContext(IndexContext);
+  const { isBookingPageOpen, setIsBookingPageOpen, setIsBookingId, isBookingId } = useContext(IndexContext);
   const param = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,11 +26,13 @@ const DetailsPage = () => {
   const service = services?.find(service => service._id === param.id);
 
   // নির্দিষ্ট বুকিং সার্ভিস খোঁজা (কারেন্ট ইউজারের জন্য)
-  const bookingService = bookingServices?.find(bookingService => bookingService.user === users?._id);
+  const bookingService = bookingServices?.filter(bookingService => bookingService.user === users?._id);
+  const isBooked = bookingService?.find(service => service.serviceId === param?.id)
 
   // নির্দিষ্ট ফেভারিট আইটেম খোঁজা (কারেন্ট ইউজারের জন্য)
   const favoriteItem = favorites?.find(favorite => favorite.userId === users?._id && favorite.serviceId === param.id);
 
+  console.log(bookingService);
 
 
   useEffect(() => {
@@ -242,7 +244,7 @@ const DetailsPage = () => {
         </div>
 
         <div className="flex gap-4">
-          {bookingService ?
+          {isBooked ?
             <Link onClick={handleWorning} type="button" className="w-full px-4 text-center py-3 cursor-pointer bg-rose-400 hover:bg-rose-500 text-white text-sm font-semibold rounded"> Already Booked! See Status</Link>
             :
             <button onClick={() => bookedHandle(service._id)} type="button" className="w-full px-4 py-3 cursor-pointer bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-semibold rounded">Book This Service</button>}
