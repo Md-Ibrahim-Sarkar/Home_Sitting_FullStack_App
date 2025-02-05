@@ -36,7 +36,7 @@ app.use('/api/booking', bookedRouter)
 app.use('/api/favorite', favoriteRouter)
 
 // this 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "../frontend/dist")))
 
   app.get("*", (req, res) => {
