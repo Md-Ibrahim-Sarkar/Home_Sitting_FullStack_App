@@ -5,7 +5,7 @@ import { connectDB } from './lib/db.js';
 import authRouter from './routes/auth.route.js';
 import servicesRouter from './routes/service.route.js';
 import bookedRouter from './routes/booked.route.js';
-import favoriteRouter from './routes/Favorite.route.js';
+import favoriteRouter from './routes/favorite.route.js';
 import cookieParser from 'cookie-parser';
 
 
