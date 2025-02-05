@@ -11,14 +11,18 @@ const My_Orders = () => {
   const { bookingServices } = useSelector(store => store.bookingServices);
   const { users } = useSelector(store => store.user);
 
-  const findOrderedServices = bookingServices?.filter(service => service.serviceOwnerEmail === users.email && service.status !== 'cancel' && service.status !== 'Completed')
-  const findCancelOrders = bookingServices?.filter(service => service.serviceOwnerEmail === users.email && service.status === 'cancel')
-  const findCompletedOrders = bookingServices?.filter(service => service.serviceOwnerEmail === users.email && service.status === 'Completed')
+  const findOrderedServices = bookingServices?.filter(service => service.serviceOwnerEmail === users?.email && service.status !== 'cancel' && service.status !== 'Completed')
+  const findCancelOrders = bookingServices?.filter(service => service.serviceOwnerEmail === users?.email && service.status === 'cancel')
+  const findCompletedOrders = bookingServices?.filter(service => service.serviceOwnerEmail === users?.email && service.status === 'Completed')
+
+  console.log(findOrderedServices);
+  console.log(users);
 
 
+  useEffect(() => {
+    dispatch(getBookingServices())
+  }, [dispatch])
 
-
-  console.log(findCompletedOrders);
 
 
   const cancelOrderHandle = (id) => {

@@ -18,12 +18,12 @@ const Sidebar = () => {
 
         <div className="flex flex-wrap flex-col justify-center items-center cursor-pointer">
           <p className="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center font-bold text-black text-xl">
-            <img src={users.profilePic} alt="" />
+            <img src={users?.profilePic} alt="" />
           </p>
 
           <div className="text-center mt-2">
-            <p className="text-base ">{users.fullName}</p>
-            <p className="text-xs  mt-0.5">{users.email}</p>
+            <p className="text-base ">{users?.fullName}</p>
+            <p className="text-xs  mt-0.5">{users?.email}</p>
           </div>
         </div>
 

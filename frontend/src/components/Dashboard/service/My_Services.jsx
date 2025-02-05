@@ -3,7 +3,7 @@ import { axiosInstance } from "../../../lib/axiosInstanace";
 import { toast } from "react-toastify";
 import { getServices } from "../../../features/services/serviceSlice";
 import Edit_Service from "./Edit_Service";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { IndexContext } from "../../../context";
 import SeeDetails from "./SeeDetails";
 import Swal from 'sweetalert2'
@@ -58,14 +58,18 @@ const My_Services = () => {
   }
 
 
+  useEffect(() => {
+    dispatch(getServices())
+  }, [dispatch])
+
 
   return (
     <>
       <div className="font-sans p-4 mx-auto lg:max-w-7xl md:max-w-4xl max-w-xl min-h-[750px]">
         <h2 className="text-2xl sm:text-3xl font-bold  text-center mb-2 sm:mb-3">My Services</h2>
-        {filteredServices > 0 ?
+        {filteredServices?.length > 0 ?
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredServices.map(service => <div key={service._id} className="bg-gray-100 p-2 overflow-hidden cursor-pointer">
+            {filteredServices?.map(service => <div key={service._id} className="bg-gray-100 p-2 overflow-hidden cursor-pointer">
               <div className="bg-white flex flex-col h-full">
                 <div className="w-full">
                   <img src={service.image} alt="food1"

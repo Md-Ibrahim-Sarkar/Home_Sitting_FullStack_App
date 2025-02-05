@@ -23,7 +23,7 @@ const DetailsPage = () => {
   const { favorites } = useSelector(store => store.favorites);
 
   // নির্দিষ্ট সার্ভিস খোঁজা
-  const service = services.find(service => service._id === param.id);
+  const service = services?.find(service => service._id === param.id);
 
   // নির্দিষ্ট বুকিং সার্ভিস খোঁজা (কারেন্ট ইউজারের জন্য)
   const bookingService = bookingServices?.find(bookingService => bookingService.user === users?._id);
@@ -31,8 +31,6 @@ const DetailsPage = () => {
   // নির্দিষ্ট ফেভারিট আইটেম খোঁজা (কারেন্ট ইউজারের জন্য)
   const favoriteItem = favorites?.find(favorite => favorite.userId === users?._id && favorite.serviceId === param.id);
 
-
-  console.log(favoriteItem);
 
 
   useEffect(() => {
@@ -94,7 +92,7 @@ const DetailsPage = () => {
 
       } else {
         Swal.fire({
-          title: "No need to purchase your own service! 😊",
+          title: "No need Add your own service to wishList! 😊",
           icon: "error",
         })
       }
@@ -134,7 +132,7 @@ const DetailsPage = () => {
 
   const favoriteWorning = () => {
     Swal.fire({
-      title: "This service is already in your wishlist!",
+      title: "This service is already on your wishlist!",
       showCancelButton: true,
       confirmButtonText: "Go to Wishlist",
       icon: "warning"
@@ -158,14 +156,14 @@ const DetailsPage = () => {
 
           <div className="lg:col-span-2 text-center mb-6">
             <div className="p-4 relative before:absolute before:inset-0  before:opacity-20 before:rounded">
-              <img src={service.image} alt="Product" className="w-full aspect-[575/418] rounded object-contain object-top" />
+              <img src={service?.image} alt="Product" className="w-full aspect-[575/418] rounded object-contain object-top" />
             </div>
           </div>
 
           <div className="lg:col-span-3">
             <div className="flex flex-wrap items-start gap-4">
               <div>
-                <h2 className="text-xl font-bold ">{service.name}</h2>
+                <h2 className="text-xl font-bold ">{service?.name}</h2>
 
                 <div className="flex space-x-1 mt-2">
                   <svg className="w-4 h-4 fill-orange-500" viewBox="0 0 14 13" fill="none"
@@ -222,19 +220,19 @@ const DetailsPage = () => {
             <hr className="my-2" />
             <div>
               <h3 className="text-xl font-bold ">Description</h3>
-              <p className="text-sm  mt-4">{service.description}</p>
+              <p className="text-sm  mt-4">{service?.description}</p>
             </div>
 
             <hr className="my-2" />
             <div>
               <h3 className="text-xl font-bold ">Category</h3>
-              <p className="text-sm  mt-2">{service.category}</p>
+              <p className="text-sm  mt-2">{service?.category}</p>
             </div>
 
             <hr className="my-2" />
             <div>
               <h3 className="text-xl font-bold ">Price</h3>
-              <p className=" text-4xl font-bold mt-2">${service.price}</p>
+              <p className=" text-4xl font-bold mt-2">${service?.price}</p>
             </div>
 
             <hr className="my-3" />

@@ -15,9 +15,6 @@ const Edit_Service = () => {
 
   const currentService = services?.find(service => service._id === isEditId)
 
-  console.log(isEditId);
-
-
 
   const submitHandle = async (e, id) => {
     e.preventDefault()
@@ -43,8 +40,6 @@ const Edit_Service = () => {
           toast.success('Service updated successfully')
         }
       })
-    console.log(res);
-
 
   }
 
@@ -100,7 +95,7 @@ const Edit_Service = () => {
                   defaultValue={currentService.category}
                 >
                   <option className="dark:bg-gray-900" value="">Choose a service...</option>
-                  {categories.map((category, index) => (
+                  {categories?.map((category, index) => (
                     <option className="dark:bg-gray-900" key={index} value={category}>
                       {category}
                     </option>

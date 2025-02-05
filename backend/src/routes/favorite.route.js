@@ -12,5 +12,4 @@ router.get('/get', protectRoute, getFavorites)
 router.delete('/delete/:id', protectRoute, deleteFavorite)
 
 
-
 export default router

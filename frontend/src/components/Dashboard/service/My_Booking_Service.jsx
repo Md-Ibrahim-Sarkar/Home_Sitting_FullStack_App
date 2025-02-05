@@ -11,7 +11,6 @@ const My_Booking_Service = () => {
   const { bookingServices } = useSelector(store => store.bookingServices)
 
   const filteredMyBookings = bookingServices?.filter(service => service.user === users?._id && service.status !== 'cancel')
-  const findCancelOrders = bookingServices?.filter(service => service.user === users?._id && service.status === 'cancel')
 
   const cancelHandle = (id) => {
     try {
@@ -96,7 +95,7 @@ const My_Booking_Service = () => {
 
             <div className="mt-6 flow-root sm:mt-8">
               <div className="divide-y divide-gray-200 dark:divide-gray-700">
-                {filteredMyBookings > 0 ? filteredMyBookings?.map(service =>
+                {filteredMyBookings?.length > 0 ? filteredMyBookings?.map(service =>
 
                   <div key={service._id} className="flex flex-wrap items-center gap-y-4 py-6">
                     <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">

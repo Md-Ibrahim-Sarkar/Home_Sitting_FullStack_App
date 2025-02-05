@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { axiosInstance } from "../../lib/axiosInstanace";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { getServices } from "../../features/services/serviceSlice";
 
 const WishList = () => {
   const dispatch = useDispatch();
@@ -18,9 +19,6 @@ const WishList = () => {
   const filterServices = services?.filter((service) =>
     userFavorites?.some((fav) => fav.serviceId === service._id)
   );
-
-
-  console.log(filterServices);
 
 
 
@@ -58,6 +56,7 @@ const WishList = () => {
   }
   useEffect(() => {
     dispatch(getFavorites())
+    dispatch(getServices())
   }, [dispatch])
 
   return (

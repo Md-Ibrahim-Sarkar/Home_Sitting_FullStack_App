@@ -39,7 +39,7 @@ const Add_Service = () => {
       price: service.price,
       category: service.category,
       image: cover,
-      user: { user_id: users._id, email: users.email },
+      user: { user_id: users?._id, email: users?.email },
     }
 
     const response = await axiosInstance.post('/service/add', newData)
@@ -102,7 +102,7 @@ const Add_Service = () => {
                   name="category"
                 >
                   <option className="dark:bg-gray-900" value="">Choose a service...</option>
-                  {categories.map((category, index) => (
+                  {categories?.map((category, index) => (
                     <option className="dark:bg-gray-900" key={index} value={category}>
                       {category}
                     </option>

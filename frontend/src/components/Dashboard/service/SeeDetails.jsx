@@ -1,10 +1,12 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { IndexContext } from "../../../context"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { IoIosCloseCircle } from "react-icons/io";
+import { getServices } from "../../../features/services/serviceSlice";
 
 
 const SeeDetails = () => {
+  const dispatch = useDispatch()
   const { setIsViewOpen, isViewId } = useContext(IndexContext)
   const { services } = useSelector(store => store.services)
 
@@ -12,9 +14,9 @@ const SeeDetails = () => {
 
 
 
-
-
-
+  useEffect(() => {
+    dispatch(getServices())
+  }, [dispatch])
 
 
   return (
@@ -25,14 +27,14 @@ const SeeDetails = () => {
 
           <div className="lg:col-span-2  text-center mb-6">
             <div className="p-4 relative before:absolute before:inset-0 before:bg-black before:opacity-20 before:rounded">
-              <img src={service.image} alt="Product" className="w-full aspect-[575/418] rounded object-contain object-top" />
+              <img src={service?.image} alt="Product" className="w-full aspect-[575/418] rounded object-contain object-top" />
             </div>
           </div>
 
           <div className="lg:col-span-3">
             <div className="flex flex-wrap items-start gap-4">
               <div>
-                <h2 className="text-xl font-bold ">{service.name}</h2>
+                <h2 className="text-xl font-bold ">{service?.name}</h2>
 
                 <div className="flex space-x-1 mt-2">
                   <svg className="w-4 h-4 fill-orange-500" viewBox="0 0 14 13" fill="none"
@@ -89,19 +91,19 @@ const SeeDetails = () => {
             <hr className="my-2" />
             <div>
               <h3 className="text-xl font-bold ">Description</h3>
-              <p className="text-sm  mt-4">{service.description}</p>
+              <p className="text-sm  mt-4">{service?.description}</p>
             </div>
 
             <hr className="my-2" />
             <div>
               <h3 className="text-xl font-bold ">Category</h3>
-              <p className="text-sm  mt-2">{service.category}</p>
+              <p className="text-sm  mt-2">{service?.category}</p>
             </div>
 
             <hr className="my-2" />
             <div>
               <h3 className="text-xl font-bold ">Price</h3>
-              <p className=" text-4xl font-bold mt-2">${service.price}</p>
+              <p className=" text-4xl font-bold mt-2">${service?.price}</p>
             </div>
 
             <hr className="my-3" />

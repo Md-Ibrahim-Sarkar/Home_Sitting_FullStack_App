@@ -31,7 +31,7 @@ const UsersList = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentUsers = users.slice(
+  const currentUsers = users?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -46,12 +46,12 @@ const UsersList = () => {
 
   // 🔹 CSV ডাউনলোড ফাংশন (সকল ইউজার সহ)
   const downloadCSV = () => {
-    if (!users || users.length === 0) {
+    if (!users || users?.length === 0) {
       alert("No users available to download.");
       return;
     }
 
-    const csvData = users.map((user, index) => ({
+    const csvData = users?.map((user, index) => ({
       "No": index + 1,
       "Full Name": user.fullName,
       "Email": user.email,
@@ -100,7 +100,7 @@ const UsersList = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-500">
-                {currentUsers.map((user, index) => (
+                {currentUsers?.map((user, index) => (
                   <tr key={user._id}>
                     <td className="border-b border-gray-200 px-5 py-5 text-sm">
                       <p className="whitespace-no-wrap">{(currentPage - 1) * itemsPerPage + index + 1}</p>
