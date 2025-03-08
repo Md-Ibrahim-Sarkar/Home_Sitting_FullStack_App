@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import { RiLoaderLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/auth/AuthContext";
 
 const PrivateRoute = ({ children }) => {
-  const { users, isLoading } = useSelector(store => store.user);
+  const { user, isLoading } = useContext(AuthContext)
   const location = useLocation();
   const navigate = useNavigate()
 
@@ -17,11 +19,11 @@ const PrivateRoute = ({ children }) => {
   }
 
 
-  if (users !== null) {
+  if (user !== null) {
     return children;
   }
 
-  if (users) return <Navigate to={location.pathname} />;
+  if (user) return <Navigate to={location.pathname} />;
 
   navigate("/login", { replace: true });
 

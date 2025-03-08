@@ -1,101 +1,117 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom"
-import Register from "./pages/Register"
-import Home from "./pages/Home"
-import LogIn from "./pages/LogIn"
-import Navbar from "./components/Navbar"
-import Services from "./pages/Services"
-import { ToastContainer } from "react-toastify"
-import PrivateRoute from "./routes/PrivateRoute"
-import { useUserCheckApi } from "./features/users/userApi"
-import { useEffect } from "react"
-import { RiLoaderLine } from "react-icons/ri";
-import { useSelector } from "react-redux"
-import UpdateProfile from "./components/UpdateProfile"
-import Footer from "./components/Footer"
-import DashboardServices from "./components/Dashboard/service/Services"
-import Add_Service from "./components/Dashboard/service/Add_Service"
-import DashboardLayout from "./layout/DashboardLayout"
-import ReviewSection from "./components/other-section/ReviewSection"
-import DetailsPage from "./components/Service/DetailsPage"
-import My_Services from "./components/Dashboard/service/My_Services"
-import UsersList from "./components/Dashboard/UsersList"
-import AdminRoute from "./routes/AdminRoute"
-import All_Services from "./components/Service/All_Services"
-import CategoryByServices from "./components/Service/CategoryByServices"
-import My_Booking_Service from "./components/Dashboard/service/My_Booking_Service"
-import My_Orders from "./components/Dashboard/service/My_Orders"
-import WishList from "./components/Dashboard/WishList"
-import Contact_Us from "./components/Contact_Us"
-import ErrorPage from "./components/ErrorPage"
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
+import { ToastContainer } from "react-toastify";
+import { useContext } from "react";
+import UpdateProfile from "./components/UpdateProfile";
+import Footer from "./components/Footer";
+import ContactUs from "./components/Contact_Us";
+import ErrorPage from "./components/ErrorPage";
 import { Helmet } from "react-helmet";
-
+import Wishlist from "./components/user-account/Wishlist";
+import Register from "./pages/auth/Register";
+import { AuthContext } from "./context/auth/AuthContext";
+import LogIn from "./pages/auth/LogIn";
+import ShoppingCart from "./components/shopping/ShoppingCart";
+import ProductCategories from "./pages/Product_Categorys";
+import ProductDetails from "./pages/ProductDetails";
+import MyOrder from "./components/user-account/My_Order";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import PrivateRoute from "./components/routes/PrivateRoute";
+import AdminRoute from "./components/routes/AdminRoute";
+import Dashboard from "./pages/admin/Dashboard";
+import DashboardLayout from "./layout/DashboardLayout";
+import AllProducts from "./pages/admin/products/All_Products";
+import ProductForm from "./pages/admin/products/Add_Product";
+import AddCategories from "./pages/admin/categories/Add_Categories";
+import EditProduct from "./pages/admin/products/Edit_Product";
+import AllOrders from "./pages/admin/orders/AllOrders";
+import PendingOrders from "./pages/admin/orders/PendingOrders";
+import CompletedOrders from "./pages/admin/orders/CompletedOrders";
+import Users from "./pages/admin/users/Users";
+import OrderManagement from "./pages/admin/orders/OrderManagement";
+import SiteAnalytics from "./pages/admin/analytics/SiteAnalytics";
+import Settings from "./pages/admin/settings/Settings";
+import PublicProfile from './components/PublicProfile';
+import ContactMessages from "./pages/admin/ContactMessages";
+import SalesReport from "./pages/admin/SalesReport";
 
 const App = () => {
-
-  const location = useLocation()
-
-  const pathSegments = location.pathname.split("/"); // "/" দিয়ে path ভাগ করা
-  const pathName = pathSegments[pathSegments.length - 1] || "Home"; // সর্বশেষ অংশ নেওয়া
-  const path = pathName.replace('-', ' ')
-
-
-  const { users } = useSelector((store) => store.user);
-
-  const checkApi = useUserCheckApi();
-
-  useEffect(() => {
-    checkApi();
-  }, []);
+  const { pathname } = useLocation();
+  const isDashboard = pathname.startsWith("/admin-dashboard");
+  const pathSegments = pathname.split("/").filter(Boolean);
+  const pathName = pathSegments[pathSegments.length - 1] || "Home";
+  const formattedPath = pathName.replace(/-/g, " ");
+  const { user, isLoading } = useContext(AuthContext);
 
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Home Sitting | {path.charAt(0).toUpperCase() + path.slice(1)}</title>
-        <link rel="canonical" href="http://mysite.com/example" />
+        <title>Sowda | {formattedPath.charAt(0).toUpperCase() + formattedPath.slice(1)}</title>
+        <link rel="canonical" href={`https://yourwebsite.com${pathname}`} />
       </Helmet>
+      <div className="sticky top-0 z-[100000] bg-white shadow-2xl">
+        {!isDashboard && <Navbar />}
+      </div>
 
-      <Navbar />
-      <div className="">
+      <div>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={!users ? <LogIn /> : <Navigate to="/" />} />
-          <Route path="/register" element={!users ? <Register /> : <Navigate to="/update-profile" />} />
-          <Route path="/services/details/:id" element={<DetailsPage />} />
-          <Route path="/contact-us" element={<Contact_Us />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/order-confirmation" element={<PrivateRoute><OrderConfirmation /></PrivateRoute>} />
 
-          {/* services Routes (With Layout) */}
-          <Route path="/services" element={<Services />} >
-            <Route index element={<All_Services />} />
-            <Route path="/services/:category" element={<CategoryByServices />} />
+          {/* Dynamic Product Category Route */}
+          <Route path="/product-category/:category?" element={<ProductCategories />} />
+
+          {/* Product Details */}
+          <Route path="/products/:id" element={<ProductDetails />} />
+          <Route path="/shopping-cart" element={<ShoppingCart />} />
+
+          {/* Protected Routes */}
+          <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
+          <Route path="/my-orders" element={<PrivateRoute><MyOrder /></PrivateRoute>} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>} />
+
+          {/* Admin Routes */}
+          <Route path="/admin-dashboard" element={<AdminRoute><DashboardLayout /></AdminRoute>}>
+            <Route index element={<Dashboard />} />
+            <Route path="all-products" element={<AllProducts />} />
+            <Route path="add-product" element={<ProductForm />} />
+            <Route path="edit-product/:id" element={<EditProduct />} />
+            <Route path="add-category" element={<AddCategories />} />
+            <Route path="analytics" element={<SiteAnalytics />} />
+            <Route path="settings" element={<Settings />} />
+
+            {/* Orders */}
+            <Route path="orders" element={<AllOrders />} />
+            <Route path="orders/pending" element={<PendingOrders />} />
+            <Route path="orders/completed" element={<CompletedOrders />} />
+            <Route path="orders/management" element={<OrderManagement />} />
+
+            {/* Users */}
+            <Route path="users" element={<Users />} />
+            <Route path="contact-messages" element={<ContactMessages />} />
+            <Route path="sales-report" element={<SalesReport />} />
           </Route>
 
-          {/* Private Dashboard Routes (With Layout) */}
-          <Route path="/dashboard" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
-            <Route index element={<DashboardServices />} />
-            <Route path="add-service" element={<Add_Service />} />
-            <Route path="my-services" element={<My_Services />} />
-            <Route path="my-booking-services" element={<My_Booking_Service />} />
-            <Route path="my-orders" element={<My_Orders />} />
-            <Route path="wishlist" element={<WishList />} />
+          {/* Public Profile Route */}
+          <Route path="/my-profile" element={<PrivateRoute><PublicProfile /></PrivateRoute>} />
 
-            <Route path="users-list" element={<AdminRoute> <UsersList /> </AdminRoute>} />
-
-          </Route>
-
-
-          {/* Update Profile */}
-          <Route path="/update-profile" element={users ? <UpdateProfile /> : <Navigate to="/login" />} />
+          {/* 404 Page */}
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>
-      <ReviewSection />
 
-      <Footer />
-      <ToastContainer />
+      {!isDashboard && <Footer />}
+      <ToastContainer autoClose={700} position="top-right" className="z-[100000] mt-20" />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

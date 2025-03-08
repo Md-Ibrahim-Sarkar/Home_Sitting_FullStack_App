@@ -1,9 +1,11 @@
 import { RiLoaderLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/auth/AuthContext";
+import { useContext } from "react";
 
 const AdminRoute = ({ children }) => {
-  const { users, isLoading } = useSelector(store => store.user);
+  const { user, isLoading } = useContext(AuthContext)
   const location = useLocation();
 
   if (isLoading) {
@@ -13,7 +15,7 @@ const AdminRoute = ({ children }) => {
   }
 
 
-  if (users?.role === "admin") {
+  if (user?.role === "admin") {
     return children;
   }
 

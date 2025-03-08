@@ -6,17 +6,13 @@ const favoriteSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    serviceId: {
+    productId: {
       type: String,
       required: true
     },
     date: {
       type: Date,
       required: true
-    },
-    love: {
-      type: Number,
-      default: 0
     }
   },
   { timestamps: true }

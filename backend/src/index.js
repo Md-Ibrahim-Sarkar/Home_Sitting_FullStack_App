@@ -1,51 +1,62 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { connectDB } from './lib/db.js';
-import authRouter from './routes/auth.route.js';
-import servicesRouter from './routes/service.route.js';
-import bookedRouter from './routes/booked.route.js';
-import favoriteRouter from './routes/favorite.route.js';
 import cookieParser from 'cookie-parser';
+import { connectDB } from './lib/db.js'; // MongoDB Connect Function
+import authRouter from './routes/auth.route.js';
+import productsRouter from './routes/product.route.js';
+import orderRouter from './routes/order.route.js';
+import favoriteRouter from './routes/favorite.route.js';
+import categoryRouter from './routes/category.route.js';
+import cartRouter from './routes/cart.route.js';
+import Newsletter from './models/newslatter.model.js';
+import settingsRouter from './routes/settingsRoutes.js';
+import contactRouter from './routes/contact.route.js';
 
-
-// this
-import path from "path"
-
-dotenv.config()
+dotenv.config();
 const app = express();
-const port = process.env.LOCAL_DB_HOST
+const port = process.env.PORT || 5000;
 
-
-// this
-const __dirname = path.resolve()
-
-
+// Middleware
 app.use(cookieParser());
-
 app.use(cors({
-  origin: ['http://localhost:5173'],
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'https://client-01-e-commerce.pages.dev', 'https://e-commerce-pi-pied.vercel.app'],
   credentials: true,
-}))
-app.use(express.json())
+}));
+app.use(express.json());
 
+// API Routes
+app.use('/api/auth', authRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/order', orderRouter);
+app.use('/api/favorite', favoriteRouter);
+app.use('/api/category', categoryRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/settings', settingsRouter);
+app.use('/api/contact', contactRouter);
 
-app.use('/api/auth', authRouter)
-app.use('/api/service', servicesRouter)
-app.use('/api/booking', bookedRouter)
-app.use('/api/favorite', favoriteRouter)
+app.use('/api/newsletter', async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+  const existingEmail = await Newsletter.findOne({ email });
+  if (existingEmail) {
+    return res.status(400).json({ message: 'Email already exists' });
+  }
+  const newsletter = await Newsletter.create({ email });
+  if (newsletter) {
+    res.status(200).json({ message: 'Email received' });
+  } else {
+    res.status(400).json({ message: 'Email not received' });
+  }
+});
 
-// this 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")))
-
-  app.get("*", (req, res) => {
-    app.sendFile(path.join(__dirname, "../frontend/dist", "dist", "index.html"))
-  })
-}
-
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-  connectDB()
-})
+// Database Connection & Server Start
+connectDB().then(() => {
+  app.listen(port, () => {
+    console.log(`✅ Server is running on port ${port}`);
+  });
+}).catch((err) => {
+  console.error("❌ MongoDB connection failed!", err);
+});
