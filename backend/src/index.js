@@ -23,10 +23,12 @@ const __dirname = path.resolve()
 
 app.use(cookieParser());
 
-app.use(cors({
-  origin: ['http://localhost:5173'],
-  credentials: true,
-}))
+app.use(
+  cors({
+    origin: ['http://localhost:5173', 'https://home-sitting.onrender.com'],
+    credentials: true,
+  })
+);
 app.use(express.json())
 
 
